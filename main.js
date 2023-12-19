@@ -133,40 +133,40 @@ function App() {
 
          item.ondrop = (e) => {
             e.preventDefault();
-            const lastDragover = $$(".content-col.dragover");
-            const todos = e.currentTarget.querySelectorAll(".todo-list-item");
-            const arrTodo = [];
-            const getTodosStore = todosStore.get("todos");
-            const todoStoreCopied = JSON.parse(JSON.stringify(getTodosStore));
+            // const lastDragover = $$(".content-col.dragover");
+            // const todos = e.currentTarget.querySelectorAll(".todo-list-item");
+            // const arrTodo = [];
+            // const getTodosStore = todosStore.get("todos");
+            // const todoStoreCopied = JSON.parse(JSON.stringify(getTodosStore));
 
-            if (lastDragover) lastDragover.forEach((item) => item.classList.remove("dragover"));
+            // if (lastDragover) lastDragover.forEach((item) => item.classList.remove("dragover"));
 
-            todos.forEach((item) => {
-               const dueDate = item.querySelector(".todo-list-item__content-due-date span").innerText;
-               const value = item.querySelector(".todo-list-item__content-text").innerText;
-               const dateCreated = item.querySelector(".todo-list-item__content-date-created span").innerText;
+            // todos.forEach((item) => {
+            //    const dueDate = item.querySelector(".todo-list-item__content-due-date span").innerText;
+            //    const value = item.querySelector(".todo-list-item__content-text").innerText;
+            //    const dateCreated = item.querySelector(".todo-list-item__content-date-created span").innerText;
 
-               const state = {
-                  id: item.dataset.id,
-                  value,
-                  dueDate,
-                  status: e.currentTarget.classList[1][0].toUpperCase() + e.currentTarget.classList[1].slice(1),
-                  dateCreated,
-               };
+            //    const state = {
+            //       id: item.dataset.id,
+            //       value,
+            //       dueDate,
+            //       status: e.currentTarget.classList[1][0].toUpperCase() + e.currentTarget.classList[1].slice(1),
+            //       dateCreated,
+            //    };
 
-               if (item.classList.contains("announced")) state.announced = true;
+            //    if (item.classList.contains("announced")) state.announced = true;
 
-               arrTodo.push(state);
-            });
+            //    arrTodo.push(state);
+            // });
 
-            const remainingTodo = todoStoreCopied.filter((item1) => !arrTodo.find((item2) => item2.id === item1.id));
-            const newTodos = remainingTodo.concat(arrTodo);
+            // const remainingTodo = todoStoreCopied.filter((item1) => !arrTodo.find((item2) => item2.id === item1.id));
+            // const newTodos = remainingTodo.concat(arrTodo);
 
-            todosStore.set("todos", newTodos);
+            // todosStore.set("todos", newTodos);
 
-            renderTodos();
-            renderDoingTodos();
-            renderDoneTodo();
+            // renderTodos();
+            // renderDoingTodos();
+            // renderDoneTodo();
          };
       });
 
@@ -186,7 +186,7 @@ function App() {
          const remainingEl = e.currentTarget.querySelectorAll(".todo-list-item:not(.dragging)");
          const todoList = e.currentTarget.querySelector(".todo-list ul");
 
-         const targetEl = Array.from(remainingEl).find((item) => e.clientY <= item.offsetTop + item.offsetHeight / 2);
+         const targetEl = Array.from(remainingEl).find((item) => e.clientY <= item.offsetTop);
 
          todoList.insertBefore(draggingEl, targetEl);
 
