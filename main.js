@@ -117,9 +117,11 @@ function App() {
    const handleDragTodoItem = () => {
       const contentCols = $$(".content-col");
       const todoItems = $$(".todo-list-item");
+      let currDraggingEl = null;
 
       todoItems.forEach((item) => {
          item.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("id", item.dataset.id);
             e.target.contains(item) && e.target.classList.add("dragging");
          });
 
@@ -133,6 +135,52 @@ function App() {
 
          item.ondrop = (e) => {
             e.preventDefault();
+            const id = e.dataTransfer.getData("id");
+            const todos = todosStore.get("todos");
+            const todosCopied = JSON.parse(JSON.stringify(todos));
+            const draggingItem = todosCopied.find((item) => item.id === id);
+            const draggingIndex = todosCopied.findIndex((item) => item.id === id);
+
+            const draggingEl = currDraggingEl;
+            const nextEl = draggingEl.nextElementSibling;
+            const prevEl = draggingEl.previousElementSibling;
+            let nextId = null;
+            let prevId = null;
+            let nextIndex = null;
+            let prevIndex = null;
+
+            if (nextEl) {
+               nextId = nextEl.dataset.id;
+               nextIndex = todosCopied.findIndex((item) => item.id === nextId);
+            }
+            if (prevEl) {
+               prevId = prevEl.dataset.id;
+               prevIndex = todosCopied.findIndex((item) => item.id === prevId);
+            }
+
+            console.log(prevIndex, nextIndex);
+
+            todosCopied.splice(draggingIndex, 1);
+            draggingItem.status = e.currentTarget.classList[1][0].toUpperCase() + e.currentTarget.classList[1].slice(1);
+
+            if (nextIndex === 0) {
+               todosCopied.splice(0, 0, draggingItem);
+            } else if (!nextIndex) {
+               todosCopied.push(draggingItem);
+            } else if (!prevIndex && prevIndex !== 0) {
+               todosCopied.splice(0, 0, draggingItem);
+            } else if (nextIndex && prevIndex) {
+               todosCopied.splice(Number(nextIndex) - 1, 0, draggingItem);
+            } else {
+               todosCopied.splice(nextIndex, 0, draggingItem);
+            }
+
+            todosStore.set("todos", todosCopied);
+
+            renderTodos();
+            renderDoingTodos();
+            renderDoneTodo();
+
             // const lastDragover = $$(".content-col.dragover");
             // const todos = e.currentTarget.querySelectorAll(".todo-list-item");
             // const arrTodo = [];
@@ -176,6 +224,7 @@ function App() {
 
          const lastDragover = $$(".content-col.dragover");
          const draggingEl = $(".todo-list-item.dragging");
+         currDraggingEl = draggingEl;
 
          if (lastDragover) lastDragover.forEach((item) => item.classList.remove("dragover"));
          e.currentTarget.classList.add("dragover");
