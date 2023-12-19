@@ -3,6 +3,7 @@ const $$ = document.querySelectorAll.bind(document);
 
 function App() {
    const todosStore = STORAGE("todosStore");
+   const darkModeStorage = STORAGE("darkmode");
    const calendar = flatpickrSetUp();
    let currTodoId = null;
    let firstRender = true;
@@ -140,7 +141,7 @@ function App() {
             const todosCopied = JSON.parse(JSON.stringify(todos));
             const draggingItem = todosCopied.find((item) => item.id === id);
             const draggingIndex = todosCopied.findIndex((item) => item.id === id);
-
+            const lastDragover = $$(".content-col.dragover");
             const draggingEl = currDraggingEl;
             const nextEl = draggingEl.nextElementSibling;
             const prevEl = draggingEl.previousElementSibling;
@@ -148,6 +149,8 @@ function App() {
             let prevId = null;
             let nextIndex = null;
             let prevIndex = null;
+
+            if (lastDragover) lastDragover.forEach((item) => item.classList.remove("dragover"));
 
             if (nextEl) {
                nextId = nextEl.dataset.id;
@@ -157,8 +160,6 @@ function App() {
                prevId = prevEl.dataset.id;
                prevIndex = todosCopied.findIndex((item) => item.id === prevId);
             }
-
-            console.log(prevIndex, nextIndex);
 
             todosCopied.splice(draggingIndex, 1);
             draggingItem.status = e.currentTarget.classList[1][0].toUpperCase() + e.currentTarget.classList[1].slice(1);
@@ -180,41 +181,6 @@ function App() {
             renderTodos();
             renderDoingTodos();
             renderDoneTodo();
-
-            // const lastDragover = $$(".content-col.dragover");
-            // const todos = e.currentTarget.querySelectorAll(".todo-list-item");
-            // const arrTodo = [];
-            // const getTodosStore = todosStore.get("todos");
-            // const todoStoreCopied = JSON.parse(JSON.stringify(getTodosStore));
-
-            // if (lastDragover) lastDragover.forEach((item) => item.classList.remove("dragover"));
-
-            // todos.forEach((item) => {
-            //    const dueDate = item.querySelector(".todo-list-item__content-due-date span").innerText;
-            //    const value = item.querySelector(".todo-list-item__content-text").innerText;
-            //    const dateCreated = item.querySelector(".todo-list-item__content-date-created span").innerText;
-
-            //    const state = {
-            //       id: item.dataset.id,
-            //       value,
-            //       dueDate,
-            //       status: e.currentTarget.classList[1][0].toUpperCase() + e.currentTarget.classList[1].slice(1),
-            //       dateCreated,
-            //    };
-
-            //    if (item.classList.contains("announced")) state.announced = true;
-
-            //    arrTodo.push(state);
-            // });
-
-            // const remainingTodo = todoStoreCopied.filter((item1) => !arrTodo.find((item2) => item2.id === item1.id));
-            // const newTodos = remainingTodo.concat(arrTodo);
-
-            // todosStore.set("todos", newTodos);
-
-            // renderTodos();
-            // renderDoingTodos();
-            // renderDoneTodo();
          };
       });
 
@@ -235,7 +201,7 @@ function App() {
          const remainingEl = e.currentTarget.querySelectorAll(".todo-list-item:not(.dragging)");
          const todoList = e.currentTarget.querySelector(".todo-list ul");
 
-         const targetEl = Array.from(remainingEl).find((item) => e.clientY <= item.offsetTop);
+         const targetEl = Array.from(remainingEl).find((item) => e.clientY <= item.offsetTop + item.offsetHeight / 2);
 
          todoList.insertBefore(draggingEl, targetEl);
 
@@ -272,7 +238,24 @@ function App() {
                </div>
                <div class="todo-list-item__right">
                   <button class="todo-list-item__right-more-btn">
-                     <img src="./assets/icons/more-icon.svg" alt="">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        version="1.1"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="20"
+                        height="20"
+                        x="0"
+                        y="0"
+                        viewBox="0 0 426.667 426.667"
+                        xml:space="preserve"
+                        class=""
+                     >
+                        <g>
+                           <circle cx="42.667" cy="213.333" r="42.667" fill="currentColor" opacity="1" data-original="#000000"></circle>
+                           <circle cx="213.333" cy="213.333" r="42.667" fill="currentColor" opacity="1" data-original="#000000"></circle>
+                           <circle cx="384" cy="213.333" r="42.667" fill="currentColor" opacity="1" data-original="#000000"></circle>
+                        </g>
+                     </svg>
                   </button>
                   <nav class="todo-list-item__right-menu">
                      <ul>
@@ -315,7 +298,24 @@ function App() {
                </div>
                <div class="todo-list-item__right">
                   <button class="todo-list-item__right-more-btn">
-                     <img src="./assets/icons/more-icon.svg" alt="">
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        version="1.1"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="20"
+                        height="20"
+                        x="0"
+                        y="0"
+                        viewBox="0 0 426.667 426.667"
+                        xml:space="preserve"
+                        class=""
+                     >
+                        <g>
+                           <circle cx="42.667" cy="213.333" r="42.667" fill="currentColor" opacity="1" data-original="#000000"></circle>
+                           <circle cx="213.333" cy="213.333" r="42.667" fill="currentColor" opacity="1" data-original="#000000"></circle>
+                           <circle cx="384" cy="213.333" r="42.667" fill="currentColor" opacity="1" data-original="#000000"></circle>
+                        </g>
+                     </svg>
                   </button>
                   <nav class="todo-list-item__right-menu">
                      <ul>
@@ -358,7 +358,24 @@ function App() {
                </div>
                <div class="todo-list-item__right">
                <button class="todo-list-item__right-more-btn">
-                  <img src="./assets/icons/more-icon.svg" alt="">
+                  <svg
+                     xmlns="http://www.w3.org/2000/svg"
+                     version="1.1"
+                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                     width="20"
+                     height="20"
+                     x="0"
+                     y="0"
+                     viewBox="0 0 426.667 426.667"
+                     xml:space="preserve"
+                     class=""
+                  >
+                     <g>
+                        <circle cx="42.667" cy="213.333" r="42.667" fill="currentColor" opacity="1" data-original="#000000"></circle>
+                        <circle cx="213.333" cy="213.333" r="42.667" fill="currentColor" opacity="1" data-original="#000000"></circle>
+                        <circle cx="384" cy="213.333" r="42.667" fill="currentColor" opacity="1" data-original="#000000"></circle>
+                     </g>
+                  </svg>
                </button>
                <nav class="todo-list-item__right-menu">
                   <ul>
@@ -559,6 +576,33 @@ function App() {
       }
    };
 
+   const handleDarkMode = () => {
+      const darkModeBtn = $(".darkmode-btn");
+      const circle = $(".darkmode-btn .circle");
+      const localDarkMode = darkModeStorage.get("dark-mode");
+
+      if (localDarkMode) {
+         circle.classList.add("active");
+         window.document.body.classList.add("dark-mode");
+      } else {
+         circle.classList.remove("active");
+         window.document.body.classList.remove("dark-mode");
+      }
+
+      darkModeBtn.onclick = () => {
+         if (circle.classList.contains("active")) {
+            circle.classList.remove("active");
+            window.document.body.classList.remove("dark-mode");
+            darkModeStorage.set("dark-mode", false);
+            return;
+         }
+
+         circle.classList.add("active");
+         window.document.body.classList.add("dark-mode");
+         darkModeStorage.set("dark-mode", true);
+      };
+   };
+
    function flatpickrSetUp() {
       const config = {
          enableTime: true,
@@ -579,6 +623,19 @@ function App() {
          ],
          locale: {
             firstDayOfWeek: 1,
+         },
+         onChange: function (selectedDates, dateStr, instance) {
+            const datePicked = selectedDates[0];
+
+            if (!datePicked) return;
+
+            const formatDatePicked = `${datePicked.getFullYear()}/${datePicked.getMonth()}/${datePicked.getDate()}`;
+            const timeDatePicked = new Date(formatDatePicked).getTime();
+            const currDate = new Date();
+            const formatCurrDate = `${currDate.getFullYear()}/${currDate.getMonth()}/${currDate.getDate()}`;
+            const timeCurrDate = new Date(formatCurrDate).getTime();
+
+            instance.config.minTime = timeDatePicked === timeCurrDate ? `${currDate.getHours()}:${currDate.getMinutes()}` : undefined;
          },
       };
 
@@ -631,6 +688,7 @@ function App() {
       renderDoingTodos();
       renderDoneTodo();
       handleCheckDueDate();
+      handleDarkMode();
    };
    start();
 }
