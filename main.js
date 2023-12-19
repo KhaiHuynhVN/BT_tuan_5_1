@@ -505,8 +505,6 @@ function App() {
    };
 
    const handleCheckDueDate = () => {
-      const notifiWrapper = $(".notification-wrapper");
-
       setInterval(innerFunc, 1000);
 
       // inner func
@@ -541,39 +539,50 @@ function App() {
             todosStore.set("todos", todosCopied);
             if (index >= hasDueDate.length - 1) firstRender = false;
 
-            const notifiEL = document.createElement("div");
-            notifiEL.className = "notification-item";
-            notifiEL.style = `--delay: ${index / 2}s`;
-            notifiEL.innerHTML = `
-               <div class="notification-item-left">
-                  <span class="notification-item-title">You are late for this todo!</span>
-                  <div class="notification-item-content">
-                     <span class="notification-item-content__todo-name">${content}</span>
-                     <span class="notification-item-content__todo-due-date"><b>Deadline:</b> ${dueDate}</span>
-                  </div>
-               </div>
-               <button class="notification-item__close-btn"><i class="fa-solid fa-xmark"></i></button>
-               <div class="notification-item__progress"></div>
-            `;
-            notifiWrapper.appendChild(notifiEL);
-
-            const notifiProgress = notifiEL.querySelector(".notification-item__progress");
-            const notifiCloseBtn = notifiEL.querySelector(".notification-item__close-btn");
-
-            notifiProgress.onanimationend = (e) => {
-               e.stopPropagation();
-               notifiEL.classList.add("remove");
-               notifiEL.onanimationend = (e) => {
-                  e.currentTarget.remove();
-               };
+            const datas = {
+               content,
+               dueDate,
             };
 
-            notifiCloseBtn.onclick = (e) => {
-               notifiEL.classList.add("remove");
-               notifiEL.onanimationend = (e) => e.currentTarget.remove();
-            };
+            renderNotifiItem(index, datas);
          });
       }
+   };
+
+   const renderNotifiItem = (index, datas) => {
+      const notifiWrapper = $(".notification-wrapper");
+      const notifiEL = document.createElement("div");
+
+      notifiEL.className = "notification-item";
+      notifiEL.style = `--delay: ${index / 2}s`;
+      notifiEL.innerHTML = `
+         <div class="notification-item-left">
+            <span class="notification-item-title">You are late for this todo!</span>
+            <div class="notification-item-content">
+               <span class="notification-item-content__todo-name">${datas.content}</span>
+               <span class="notification-item-content__todo-due-date"><b>Deadline:</b> ${datas.dueDate}</span>
+            </div>
+         </div>
+         <button class="notification-item__close-btn"><i class="fa-solid fa-xmark"></i></button>
+         <div class="notification-item__progress"></div>
+      `;
+      notifiWrapper.appendChild(notifiEL);
+
+      const notifiProgress = notifiEL.querySelector(".notification-item__progress");
+      const notifiCloseBtn = notifiEL.querySelector(".notification-item__close-btn");
+
+      notifiProgress.onanimationend = (e) => {
+         e.stopPropagation();
+         notifiEL.classList.add("remove");
+         notifiEL.onanimationend = (e) => {
+            e.currentTarget.remove();
+         };
+      };
+
+      notifiCloseBtn.onclick = (e) => {
+         notifiEL.classList.add("remove");
+         notifiEL.onanimationend = (e) => e.currentTarget.remove();
+      };
    };
 
    const handleDarkMode = () => {
