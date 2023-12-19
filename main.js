@@ -489,7 +489,7 @@ function App() {
 
             const notifiEL = document.createElement("div");
             notifiEL.className = "notification-item";
-            notifiEL.style = `--delay: ${index / 5}s`;
+            notifiEL.style = `--delay: ${index / 2}s`;
             notifiEL.innerHTML = `
                <div class="notification-item-left">
                   <span class="notification-item-title">You are late for this todo!</span>
@@ -510,9 +510,7 @@ function App() {
                e.stopPropagation();
                notifiEL.classList.add("remove");
                notifiEL.onanimationend = (e) => {
-                  setTimeout(() => {
-                     e.target.remove();
-                  }, 500);
+                  e.currentTarget.remove();
                };
             };
 
