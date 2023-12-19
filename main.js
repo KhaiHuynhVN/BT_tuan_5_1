@@ -131,14 +131,6 @@ function App() {
       contentCols.forEach((item) => {
          item.ondragover = contentColsDragover;
 
-         item.ondragleave = (e) => {
-            const draggingEl = e.currentTarget.querySelector(".todo-list-item.dragging");
-
-            if (!draggingEl) return;
-
-            draggingEl.classList.add("hidden");
-         };
-
          item.ondrop = (e) => {
             e.preventDefault();
             const lastDragover = $$(".content-col.dragover");
@@ -195,10 +187,6 @@ function App() {
          const todoList = e.currentTarget.querySelector(".todo-list ul");
 
          const targetEl = Array.from(remainingEl).find((item) => e.clientY <= item.offsetTop + item.offsetHeight / 2);
-
-         if (todoList.contains(draggingEl)) {
-            draggingEl.classList.remove("hidden");
-         }
 
          todoList.insertBefore(draggingEl, targetEl);
 
