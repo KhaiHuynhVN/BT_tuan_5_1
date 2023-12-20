@@ -161,21 +161,35 @@ function App() {
                prevIndex = todosCopied.findIndex((item) => item.id === prevId);
             }
 
+            // console.log(prevIndex, nextIndex, draggingIndex);
+
             todosCopied.splice(draggingIndex, 1);
             draggingItem.status = e.currentTarget.classList[1][0].toUpperCase() + e.currentTarget.classList[1].slice(1);
 
-            if (nextIndex === 0) {
-               todosCopied.unshift(draggingItem);
-            } else if (!nextIndex && !prevIndex) {
-               todosCopied.splice(draggingIndex, 0, draggingItem);
-            } else if (!nextIndex) {
+            if (!nextIndex && nextIndex !== 0) {
                todosCopied.push(draggingItem);
             } else if (!prevIndex && prevIndex !== 0) {
-               todosCopied.splice(0, 0, draggingItem);
-            } else if (nextIndex && prevIndex) {
-               todosCopied.splice(Number(nextIndex) - 1, 0, draggingItem);
-            } else {
-               todosCopied.splice(nextIndex, 0, draggingItem);
+               todosCopied.unshift(draggingItem);
+            } else if (draggingIndex > nextIndex) {
+               if (prevIndex === 0) {
+                  todosCopied.splice(nextIndex, 0, draggingItem);
+               } else if (!nextIndex && !prevIndex && nextIndex !== 0 && prevIndex !== 0) {
+                  todosCopied.splice(draggingIndex, 0, draggingItem);
+               } else if (nextIndex && prevIndex) {
+                  todosCopied.splice(nextIndex, 0, draggingItem);
+               } else {
+                  todosCopied.splice(nextIndex, 0, draggingItem);
+               }
+            } else if (draggingIndex < nextIndex) {
+               if (prevIndex === 0) {
+                  todosCopied.splice(Number(nextIndex) - 1, 0, draggingItem);
+               } else if (!nextIndex && !prevIndex && nextIndex !== 0 && prevIndex !== 0) {
+                  todosCopied.splice(draggingIndex, 0, draggingItem);
+               } else if (nextIndex && prevIndex) {
+                  todosCopied.splice(Number(nextIndex) - 1, 0, draggingItem);
+               } else {
+                  todosCopied.splice(nextIndex, 0, draggingItem);
+               }
             }
 
             todosStore.set("todos", todosCopied);
