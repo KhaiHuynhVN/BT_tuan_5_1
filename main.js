@@ -629,9 +629,10 @@ function App() {
    };
 
    function flatpickrSetUp() {
+      let condition = true;
       const config = {
          enableTime: true,
-         dateFormat: "Y-m-d H:i",
+         dateFormat: "Y-m-d H:i:S",
          minDate: "today",
          // minTime: "08:00",
          // maxTime: "18:00",
@@ -639,8 +640,12 @@ function App() {
          time_24hr: true,
          wrap: true,
          altInput: true,
+         allowInput: true,
+         enableSeconds: true,
          //  altFormat: "F j, Y h:S K",
-         altFormat: "Y/m/d H:i",
+         altFormat: "Y/m/d H:i:S",
+         minuteIncrement: 1,
+         // inline: true,
          disable: [
             function (date) {
                return date.getDay() === 0 || date.getDay() === 6;
@@ -663,7 +668,20 @@ function App() {
 
             calendar.set("minTime", timeDatePicked === timeCurrDate ? minTime : undefined);
             calendar.set("minDate", "today");
-            timeDatePicked === timeCurrDate && calendar.setDate(`${formatCurrDate} ${minTime}`);
+
+            if (timeDatePicked === timeCurrDate) {
+               condition && calendar.setDate(`${formatCurrDate} ${minTime}`);
+               condition = false;
+            } else {
+               !condition && calendar.setDate(`${formatDatePicked} 12:00`);
+               condition = true;
+            }
+         },
+         onOpen: function (selectedDates, dateStr, instance) {
+            condition = true;
+         },
+         onClose: function (selectedDates, dateStr, instance) {
+            condition = false;
          },
       };
 

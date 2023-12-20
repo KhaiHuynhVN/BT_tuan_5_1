@@ -522,7 +522,7 @@ body.dark-mode canvas {
 }
 
 .add-todo-form__input.datepicker {
-   max-width: 170px;
+   max-width: 200px;
    cursor: pointer;
 }
 
