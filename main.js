@@ -52,7 +52,7 @@ function App() {
 
       if (!inputTextValue) return;
 
-      getTodosStore && getTodosStore.push(state);
+      getTodosStore && getTodosStore.unshift(state);
       newTodosStore = getTodosStore ? JSON.parse(JSON.stringify(getTodosStore)) : [state];
       todosStore.set("todos", newTodosStore);
 
@@ -165,7 +165,9 @@ function App() {
             draggingItem.status = e.currentTarget.classList[1][0].toUpperCase() + e.currentTarget.classList[1].slice(1);
 
             if (nextIndex === 0) {
-               todosCopied.splice(0, 0, draggingItem);
+               todosCopied.unshift(draggingItem);
+            } else if (!nextIndex && !prevIndex) {
+               todosCopied.splice(draggingIndex, 0, draggingItem);
             } else if (!nextIndex) {
                todosCopied.push(draggingItem);
             } else if (!prevIndex && prevIndex !== 0) {
@@ -201,7 +203,11 @@ function App() {
          const remainingEl = e.currentTarget.querySelectorAll(".todo-list-item:not(.dragging)");
          const todoList = e.currentTarget.querySelector(".todo-list ul");
 
-         const targetEl = Array.from(remainingEl).find((item) => e.clientY <= item.offsetTop + item.offsetHeight / 2);
+         const targetEl = Array.from(remainingEl).find((item) => {
+            console.log("y: ", e);
+            console.log("point: ", item.offsetTop + item.offsetHeight / 2);
+            return e.pageY <= item.offsetTop + item.offsetHeight / 2;
+         });
 
          todoList.insertBefore(draggingEl, targetEl);
 
