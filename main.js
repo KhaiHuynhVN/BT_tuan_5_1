@@ -77,7 +77,7 @@ function App() {
             todo.status = "Doing";
 
             const remainingTodosCopied = todosCopied.filter((item) => item.id !== todo.id);
-            remainingTodosCopied.push(todo);
+            remainingTodosCopied.unshift(todo);
 
             todosStore.set("todos", remainingTodosCopied);
 
@@ -105,7 +105,7 @@ function App() {
             todo.status = "Done";
 
             const remainingTodosCopied = todosCopied.filter((item) => item.id !== todo.id);
-            remainingTodosCopied.push(todo);
+            remainingTodosCopied.unshift(todo);
 
             todosStore.set("todos", remainingTodosCopied);
 
