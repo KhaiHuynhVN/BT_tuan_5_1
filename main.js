@@ -203,11 +203,7 @@ function App() {
          const remainingEl = e.currentTarget.querySelectorAll(".todo-list-item:not(.dragging)");
          const todoList = e.currentTarget.querySelector(".todo-list ul");
 
-         const targetEl = Array.from(remainingEl).find((item) => {
-            console.log("y: ", e);
-            console.log("point: ", item.offsetTop + item.offsetHeight / 2);
-            return e.pageY <= item.offsetTop + item.offsetHeight / 2;
-         });
+         const targetEl = Array.from(remainingEl).find((item) => e.pageY <= item.offsetTop + item.offsetHeight / 2);
 
          todoList.insertBefore(draggingEl, targetEl);
 
