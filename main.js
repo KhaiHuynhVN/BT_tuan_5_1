@@ -161,8 +161,6 @@ function App() {
                prevIndex = todosCopied.findIndex((item) => item.id === prevId);
             }
 
-            // console.log(prevIndex, nextIndex, draggingIndex);
-
             todosCopied.splice(draggingIndex, 1);
             draggingItem.status = e.currentTarget.classList[1][0].toUpperCase() + e.currentTarget.classList[1].slice(1);
 
