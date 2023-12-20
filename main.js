@@ -450,11 +450,12 @@ function App() {
             editBtn.onclick = () => {
                const parent = item.closest(".todo-list-item");
                const todoContent = parent.querySelector(".todo-list-item__content-text");
-               const todoDuaDate = parent.querySelector(".todo-list-item__content-due-date");
+               const todoDuaDate = parent.querySelector(".todo-list-item__content-due-date span");
                currTodoId = parent.dataset.id;
 
                addTodoInputText.value = todoContent.innerText;
                addTodoInputText.focus();
+               calendar.set("minDate", undefined);
                calendar.setDate(todoDuaDate.innerText);
                addTodoBtn.classList.add("d-none");
                saveTodoBtn.classList.remove("d-none");
@@ -527,19 +528,20 @@ function App() {
             const time = new Date(dueDate).getTime();
             const currDate = Date.now();
 
+            if (index >= hasDueDate.length - 1) firstRender = false;
             if (currDate <= time) return;
 
             const detectTodoLateDueDates = $$(".todo-list-item:not(.announced)");
 
             detectTodoLateDueDates.forEach((item) => {
                const detectDueDate = item.querySelector(".todo-list-item__content-due-date span").innerText;
+               const getTimeDueDate = new Date(detectDueDate).getTime();
 
-               if (detectDueDate) item.classList.add("announced");
+               if (detectDueDate && getTimeDueDate <= Date.now()) item.classList.add("announced");
             });
 
             item.announced = true;
             todosStore.set("todos", todosCopied);
-            if (index >= hasDueDate.length - 1) firstRender = false;
 
             const datas = {
                content,
@@ -640,13 +642,16 @@ function App() {
 
             if (!datePicked) return;
 
-            const formatDatePicked = `${datePicked.getFullYear()}/${datePicked.getMonth()}/${datePicked.getDate()}`;
+            const formatDatePicked = `${datePicked.getFullYear()}/${datePicked.getMonth() + 1}/${datePicked.getDate()}`;
             const timeDatePicked = new Date(formatDatePicked).getTime();
             const currDate = new Date();
-            const formatCurrDate = `${currDate.getFullYear()}/${currDate.getMonth()}/${currDate.getDate()}`;
+            const formatCurrDate = `${currDate.getFullYear()}/${currDate.getMonth() + 1}/${currDate.getDate()}`;
             const timeCurrDate = new Date(formatCurrDate).getTime();
+            const minTime = `${currDate.getHours()}:${currDate.getMinutes()}`;
 
-            instance.config.minTime = timeDatePicked === timeCurrDate ? `${currDate.getHours()}:${currDate.getMinutes()}` : undefined;
+            calendar.set("minTime", timeDatePicked === timeCurrDate ? minTime : undefined);
+            calendar.set("minDate", "today");
+            timeDatePicked === timeCurrDate && calendar.setDate(`${formatCurrDate} ${minTime}`);
          },
       };
 
