@@ -1,5 +1,5 @@
 /.vscode
 .prettierrc
 
-vendor/flatpickr-style.css.map
-vendor/flatpickr-style.scss
+/vendor/flatpickr-style.css.map
+/vendor/flatpickr-style.scss
