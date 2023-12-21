@@ -480,14 +480,26 @@ function App() {
             const id = parent.dataset.id;
             const todos = todosStore.get("todos");
             const todosCopied = JSON.parse(JSON.stringify(todos));
+            const currTodo = todosCopied.find((item) => item.id === id);
 
-            const remainingTodosCopied = todosCopied.filter((item) => item.id !== id);
+            if (confirm(`Are you sure you want to delete ${currTodo.value}?`) == true) {
+               const remainingTodosCopied = todosCopied.filter((item) => item.id !== id);
 
-            todosStore.set("todos", remainingTodosCopied);
+               if (currTodoId === id) {
+                  addTodoInputText.value = "";
+                  calendar.clear();
+                  addTodoBtn.classList.remove("d-none");
+                  cancelEditBtn.classList.add("d-none");
+                  saveTodoBtn.classList.add("d-none");
+                  currTodoId = null;
+               }
 
-            renderTodos();
-            renderDoingTodos();
-            renderDoneTodo();
+               todosStore.set("todos", remainingTodosCopied);
+
+               renderTodos();
+               renderDoingTodos();
+               renderDoneTodo();
+            }
          };
       });
 
@@ -496,14 +508,13 @@ function App() {
          const todosCopied = JSON.parse(JSON.stringify(todos));
 
          const currTodoIndex = todosCopied.findIndex((item) => item.id === currTodoId);
+
          todosCopied[currTodoIndex] = {
             ...todosCopied[currTodoIndex],
             value: addTodoInputText.value,
             dueDate: addTodoInputDueDate.value,
          };
          delete todosCopied[currTodoIndex].announced;
-
-         todosStore.set("todos", todosCopied);
 
          addTodoInputText.value = "";
          calendar.clear();
@@ -512,6 +523,10 @@ function App() {
          cancelEditBtn.classList.add("d-none");
          e.currentTarget.classList.add("d-none");
          currTodoId = null;
+
+         if (currTodoIndex === -1) return;
+
+         todosStore.set("todos", todosCopied);
 
          renderTodos();
          renderDoingTodos();
