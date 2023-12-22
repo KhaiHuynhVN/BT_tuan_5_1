@@ -178,6 +178,10 @@ body.dark-mode canvas {
    /* overflow-y: auto; */
 }
 
+.content-col-container:has(.todo-list-item.dragging) .todo-list-item {
+   background-color: var(--light);
+}
+
 .content-col {
    flex: 1;
    display: flex;
@@ -238,10 +242,6 @@ body.dark-mode canvas {
 .todo-list {
    flex: 1;
    padding: 20px;
-}
-
-.todo-list:has(.todo-list-item.dragging) .todo-list-item {
-   background-color: var(--light);
 }
 
 .todo-list-item {
