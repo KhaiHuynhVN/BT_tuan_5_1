@@ -136,59 +136,75 @@ function App() {
 
          item.ondrop = (e) => {
             e.preventDefault();
+            // const id = e.dataTransfer.getData("id");
+            // const todos = todosStore.get("todos");
+            // const todosCopied = JSON.parse(JSON.stringify(todos));
+            // const draggingItem = todosCopied.find((item) => item.id === id);
+            // const draggingIndex = todosCopied.findIndex((item) => item.id === id);
+            // const lastDragover = $$(".content-col.dragover");
+            // const draggingEl = currDraggingEl;
+            // const nextEl = draggingEl.nextElementSibling;
+            // const prevEl = draggingEl.previousElementSibling;
+            // let nextId = null;
+            // let prevId = null;
+            // let nextIndex = null;
+            // let prevIndex = null;
+
+            // if (lastDragover) lastDragover.forEach((item) => item.classList.remove("dragover"));
+
+            // if (nextEl) {
+            //    nextId = nextEl.dataset.id;
+            //    nextIndex = todosCopied.findIndex((item) => item.id === nextId);
+            // }
+            // if (prevEl) {
+            //    prevId = prevEl.dataset.id;
+            //    prevIndex = todosCopied.findIndex((item) => item.id === prevId);
+            // }
+
+            // todosCopied.splice(draggingIndex, 1);
+
+            // if (!nextIndex && nextIndex !== 0) {
+            //    todosCopied.push(draggingItem);
+            // } else if (!prevIndex && prevIndex !== 0) {
+            //    todosCopied.unshift(draggingItem);
+            // } else if (draggingIndex > nextIndex) {
+            //    if (prevIndex === 0) {
+            //       todosCopied.splice(nextIndex, 0, draggingItem);
+            //    } else if (!nextIndex && !prevIndex && nextIndex !== 0 && prevIndex !== 0) {
+            //       todosCopied.splice(draggingIndex, 0, draggingItem);
+            //    } else if (nextIndex && prevIndex) {
+            //       todosCopied.splice(nextIndex, 0, draggingItem);
+            //    } else {
+            //       todosCopied.splice(nextIndex, 0, draggingItem);
+            //    }
+            // } else if (draggingIndex < nextIndex) {
+            //    if (prevIndex === 0) {
+            //       todosCopied.splice(Number(nextIndex) - 1, 0, draggingItem);
+            //    } else if (!nextIndex && !prevIndex && nextIndex !== 0 && prevIndex !== 0) {
+            //       todosCopied.splice(draggingIndex, 0, draggingItem);
+            //    } else if (nextIndex && prevIndex) {
+            //       todosCopied.splice(Number(nextIndex) - 1, 0, draggingItem);
+            //    } else {
+            //       todosCopied.splice(nextIndex, 0, draggingItem);
+            //    }
+            // }
+
             const id = e.dataTransfer.getData("id");
+            const todoItems = $$(".todo-list-item");
             const todos = todosStore.get("todos");
             const todosCopied = JSON.parse(JSON.stringify(todos));
             const draggingItem = todosCopied.find((item) => item.id === id);
-            const draggingIndex = todosCopied.findIndex((item) => item.id === id);
             const lastDragover = $$(".content-col.dragover");
-            const draggingEl = currDraggingEl;
-            const nextEl = draggingEl.nextElementSibling;
-            const prevEl = draggingEl.previousElementSibling;
-            let nextId = null;
-            let prevId = null;
-            let nextIndex = null;
-            let prevIndex = null;
+            const arrId = [...todoItems].map((item) => item.dataset.id);
+            let arrIdToObj = {};
+            arrId.forEach((item, index) => {
+               arrIdToObj[item] = index;
+            });
 
-            if (lastDragover) lastDragover.forEach((item) => item.classList.remove("dragover"));
+            todosCopied.sort((a, b) => arrIdToObj[a.id] - arrIdToObj[b.id]);
 
-            if (nextEl) {
-               nextId = nextEl.dataset.id;
-               nextIndex = todosCopied.findIndex((item) => item.id === nextId);
-            }
-            if (prevEl) {
-               prevId = prevEl.dataset.id;
-               prevIndex = todosCopied.findIndex((item) => item.id === prevId);
-            }
-
-            todosCopied.splice(draggingIndex, 1);
             draggingItem.status = e.currentTarget.classList[1][0].toUpperCase() + e.currentTarget.classList[1].slice(1);
-
-            if (!nextIndex && nextIndex !== 0) {
-               todosCopied.push(draggingItem);
-            } else if (!prevIndex && prevIndex !== 0) {
-               todosCopied.unshift(draggingItem);
-            } else if (draggingIndex > nextIndex) {
-               if (prevIndex === 0) {
-                  todosCopied.splice(nextIndex, 0, draggingItem);
-               } else if (!nextIndex && !prevIndex && nextIndex !== 0 && prevIndex !== 0) {
-                  todosCopied.splice(draggingIndex, 0, draggingItem);
-               } else if (nextIndex && prevIndex) {
-                  todosCopied.splice(nextIndex, 0, draggingItem);
-               } else {
-                  todosCopied.splice(nextIndex, 0, draggingItem);
-               }
-            } else if (draggingIndex < nextIndex) {
-               if (prevIndex === 0) {
-                  todosCopied.splice(Number(nextIndex) - 1, 0, draggingItem);
-               } else if (!nextIndex && !prevIndex && nextIndex !== 0 && prevIndex !== 0) {
-                  todosCopied.splice(draggingIndex, 0, draggingItem);
-               } else if (nextIndex && prevIndex) {
-                  todosCopied.splice(Number(nextIndex) - 1, 0, draggingItem);
-               } else {
-                  todosCopied.splice(nextIndex, 0, draggingItem);
-               }
-            }
+            if (lastDragover) lastDragover.forEach((item) => item.classList.remove("dragover"));
 
             todosStore.set("todos", todosCopied);
 
