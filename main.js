@@ -44,7 +44,7 @@ function App() {
          value: inputTextValue,
          dueDate: inputDatepickerValue,
          status: "Todo",
-         dateCreated: `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`,
+         dateCreated: `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
       };
 
       const getTodosStore = todosStore.get("todos");
@@ -483,7 +483,6 @@ function App() {
 
                addTodoInputText.value = todoContent.innerText;
                addTodoInputText.focus();
-               calendar.set("minDate", undefined);
                calendar.setDate(todoDuaDate.innerText);
                addTodoBtn.classList.add("d-none");
                saveTodoBtn.classList.remove("d-none");
@@ -695,7 +694,7 @@ function App() {
             const currDate = new Date();
             const formatCurrDate = `${currDate.getFullYear()}/${currDate.getMonth() + 1}/${currDate.getDate()}`;
             const timeCurrDate = new Date(formatCurrDate).getTime();
-            const minTime = `${currDate.getHours()}:${currDate.getMinutes()}`;
+            const minTime = `${currDate.getHours()}:${currDate.getMinutes()}:${currDate.getSeconds()}`;
 
             calendar.set("minTime", timeDatePicked === timeCurrDate ? minTime : undefined);
             calendar.set("minDate", "today");
@@ -710,6 +709,19 @@ function App() {
          },
          onOpen: function (selectedDates, dateStr, instance) {
             condition = true;
+            const datePicked = selectedDates[0];
+
+            if (!datePicked) return;
+
+            const formatDatePicked = `${datePicked.getFullYear()}/${datePicked.getMonth() + 1}/${datePicked.getDate()}`;
+            const timeDatePicked = new Date(formatDatePicked).getTime();
+            const currDate = new Date();
+            const formatCurrDate = `${currDate.getFullYear()}/${currDate.getMonth() + 1}/${currDate.getDate()}`;
+            const timeCurrDate = new Date(formatCurrDate).getTime();
+            const minTime = `${currDate.getHours()}:${currDate.getMinutes()}:${currDate.getSeconds()}`;
+
+            calendar.set("minTime", timeDatePicked === timeCurrDate ? minTime : null);
+            calendar.set("minDate", "today");
          },
          onClose: function (selectedDates, dateStr, instance) {
             condition = false;
