@@ -32,7 +32,7 @@ function App() {
       });
    };
 
-   const handleAddTodo = (e) => {
+   const handleAddTodo = () => {
       const inputText = $("#add-todo-form__input-text");
       const inputDatepicker = $("#add-todo-form__input-datepicker + .form-control.input");
       const inputTextValue = inputText.value;
@@ -50,13 +50,19 @@ function App() {
       const getTodosStore = todosStore.get("todos");
       let newTodosStore;
 
-      if (!inputTextValue) return;
+      if (!inputTextValue) {
+         alert("You have not entered Todo");
+         return;
+      }
 
       getTodosStore && getTodosStore.unshift(state);
       newTodosStore = getTodosStore ? JSON.parse(JSON.stringify(getTodosStore)) : [state];
       todosStore.set("todos", newTodosStore);
 
       inputText.value = "";
+      calendar.clear();
+      calendar.close();
+      renderTodos();
    };
 
    const handleAddDoingTodo = () => {
@@ -742,11 +748,8 @@ function App() {
       calendar.clear();
    };
 
-   addTodoBtn.onclick = (e) => {
-      handleAddTodo(e);
-      calendar.clear();
-      calendar.close();
-      renderTodos();
+   addTodoBtn.onclick = () => {
+      handleAddTodo();
    };
 
    cancelEditBtn.onclick = (e) => {
