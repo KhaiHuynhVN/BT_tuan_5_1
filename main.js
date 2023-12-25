@@ -483,6 +483,7 @@ function App() {
 
                addTodoInputText.value = todoContent.innerText;
                addTodoInputText.focus();
+               calendar.set("minDate", null);
                calendar.setDate(todoDuaDate.innerText);
                addTodoBtn.classList.add("d-none");
                saveTodoBtn.classList.remove("d-none");
@@ -676,11 +677,11 @@ function App() {
          altFormat: "Y/m/d H:i:S",
          minuteIncrement: 1,
          // inline: true,
-         disable: [
-            function (date) {
-               return date.getDay() === 0 || date.getDay() === 6;
-            },
-         ],
+         // disable: [
+         //    function (date) {
+         //       return date.getDay() === 0 || date.getDay() === 6;
+         //    },
+         // ],
          locale: {
             firstDayOfWeek: 1,
          },
@@ -709,19 +710,6 @@ function App() {
          },
          onOpen: function (selectedDates, dateStr, instance) {
             condition = true;
-            const datePicked = selectedDates[0];
-
-            if (!datePicked) return;
-
-            const formatDatePicked = `${datePicked.getFullYear()}/${datePicked.getMonth() + 1}/${datePicked.getDate()}`;
-            const timeDatePicked = new Date(formatDatePicked).getTime();
-            const currDate = new Date();
-            const formatCurrDate = `${currDate.getFullYear()}/${currDate.getMonth() + 1}/${currDate.getDate()}`;
-            const timeCurrDate = new Date(formatCurrDate).getTime();
-            const minTime = `${currDate.getHours()}:${currDate.getMinutes()}:${currDate.getSeconds()}`;
-
-            calendar.set("minTime", timeDatePicked === timeCurrDate ? minTime : null);
-            calendar.set("minDate", "today");
          },
          onClose: function (selectedDates, dateStr, instance) {
             condition = false;
@@ -764,6 +752,7 @@ function App() {
    cancelEditBtn.onclick = (e) => {
       addTodoInputText.value = "";
       calendar.clear();
+      calendar.set("minDate", "today");
       addTodoBtn.classList.remove("d-none");
       saveTodoBtn.classList.add("d-none");
       e.currentTarget.classList.add("d-none");
