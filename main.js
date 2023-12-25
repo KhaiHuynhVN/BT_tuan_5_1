@@ -489,7 +489,7 @@ function App() {
 
                addTodoInputText.value = todoContent.innerText;
                addTodoInputText.focus();
-               calendar.set("minDate", null);
+               todoDuaDate.innerText ? calendar.set("minDate", null) : calendar.set("minDate", "today");
                calendar.setDate(todoDuaDate.innerText);
                addTodoBtn.classList.add("d-none");
                saveTodoBtn.classList.remove("d-none");
@@ -703,10 +703,10 @@ function App() {
             const timeCurrDate = new Date(formatCurrDate).getTime();
             const minTime = `${currDate.getHours()}:${currDate.getMinutes()}:${currDate.getSeconds()}`;
 
-            calendar.set("minTime", timeDatePicked === timeCurrDate ? minTime : undefined);
+            calendar.set("minTime", timeDatePicked <= timeCurrDate ? minTime : undefined);
             calendar.set("minDate", "today");
 
-            if (timeDatePicked === timeCurrDate) {
+            if (timeDatePicked <= timeCurrDate) {
                condition && calendar.setDate(`${formatCurrDate} ${minTime}`);
                condition = false;
             } else {
