@@ -579,7 +579,7 @@ function App() {
             const time = new Date(dueDate).getTime();
             const currDate = Date.now();
 
-            if (index >= hasDueDate.length - 1) firstRender = false;
+            if (index === hasDueDate.length - 1) firstRender = false;
             if (currDate <= time) return;
 
             const detectTodoLateDueDates = $$(".todo-list-item:not(.announced)");
