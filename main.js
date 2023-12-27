@@ -127,7 +127,6 @@ function App() {
    const handleDragTodoItem = () => {
       const contentCols = $$(".content-col");
       const todoItems = $$(".todo-list-item");
-      let currDraggingEl = null;
 
       todoItems.forEach((item) => {
          item.addEventListener("dragstart", (e) => {
