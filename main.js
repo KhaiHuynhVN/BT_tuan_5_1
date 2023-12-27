@@ -34,15 +34,18 @@ function App() {
 
    const handleAddTodo = () => {
       const inputText = $("#add-todo-form__input-text");
-      const inputDatepicker = $("#add-todo-form__input-datepicker");
       const inputTextValue = inputText.value;
-      const inputDatepickerValue = inputDatepicker.value;
       const date = new Date();
+
+      const selectedDate = calendar.selectedDates[0];
+      const formatSelectedDate = `${selectedDate?.getFullYear()}/${
+         selectedDate?.getMonth() + 1
+      }/${selectedDate?.getDate()} ${selectedDate?.getHours()}:${selectedDate?.getMinutes()}:${selectedDate?.getSeconds()}`;
 
       const state = {
          id: String(Date.now()),
          value: inputTextValue,
-         dueDate: inputDatepickerValue,
+         dueDate: selectedDate ? formatSelectedDate : "",
          status: "Todo",
          dateCreated: `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
       };
