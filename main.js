@@ -34,7 +34,7 @@ function App() {
 
    const handleAddTodo = () => {
       const inputText = $("#add-todo-form__input-text");
-      const inputDatepicker = $("#add-todo-form__input-datepicker + .form-control.input");
+      const inputDatepicker = $("#add-todo-form__input-datepicker");
       const inputTextValue = inputText.value;
       const inputDatepickerValue = inputDatepicker.value;
       const date = new Date();
