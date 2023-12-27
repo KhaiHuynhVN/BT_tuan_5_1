@@ -572,10 +572,9 @@ function App() {
          const hasDueDate = todosCopied.filter((item) => item.dueDate && item.status !== "Done");
 
          hasDueDate.forEach((item, index) => {
-            const dueDate = item.dueDate;
-
             if (item.announced && !firstRender) return;
 
+            const dueDate = item.dueDate;
             const content = item.value;
             const time = new Date(dueDate).getTime();
             const currDate = Date.now();
@@ -592,8 +591,10 @@ function App() {
                if (detectDueDate && getTimeDueDate <= Date.now()) item.classList.add("announced");
             });
 
-            item.announced = true;
-            todosStore.set("todos", todosCopied);
+            if (!item.announced) {
+               item.announced = true;
+               todosStore.set("todos", todosCopied);
+            }
 
             const datas = {
                content,
