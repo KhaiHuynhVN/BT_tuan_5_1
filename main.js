@@ -39,8 +39,12 @@ function App() {
 
       const selectedDate = calendar.selectedDates[0];
       const formatSelectedDate = `${selectedDate?.getFullYear()}/${
-         selectedDate?.getMonth() + 1
-      }/${selectedDate?.getDate()} ${selectedDate?.getHours()}:${selectedDate?.getMinutes()}:${selectedDate?.getSeconds()}`;
+         selectedDate?.getMonth() + 1 < 10 ? "0" + selectedDate?.getMonth() + 1 : selectedDate?.getMonth() + 1
+      }/${selectedDate?.getDate() < 10 ? "0" + selectedDate?.getDate() : selectedDate?.getDate()} ${
+         selectedDate?.getHours() < 10 ? "0" + selectedDate?.getHours() : selectedDate?.getHours()
+      }:${selectedDate?.getMinutes() < 10 ? "0" + selectedDate?.getMinutes() : selectedDate?.getMinutes()}:${
+         selectedDate?.getSeconds() < 10 ? "0" + selectedDate?.getSeconds() : selectedDate?.getSeconds()
+      }`;
 
       const state = {
          id: String(Date.now()),
@@ -444,7 +448,6 @@ function App() {
       const moreBtns = $$(".todo-list-item__right-more-btn");
       const todoMenus = $$(".todo-list-item__right-menu");
       const addTodoInputText = $("#add-todo-form__input-text");
-      const addTodoInputDueDate = $("#add-todo-form__input-datepicker");
       const addTodoBtn = $(".add-todo-form__input-wrapper .add-todo-btn");
       const saveTodoBtn = $(".add-todo-form__input-wrapper .save-todo-btn");
       const cancelEditBtn = $(".add-todo-form__input-wrapper .cancel-todo-btn");
@@ -534,7 +537,6 @@ function App() {
       saveTodoBtn.onclick = (e) => {
          const todos = todosStore.get("todos");
          const todosCopied = JSON.parse(JSON.stringify(todos));
-
          const currTodoIndex = todosCopied.findIndex((item) => item.id === currTodoId);
 
          if (currTodoIndex === -1) return;
@@ -544,10 +546,19 @@ function App() {
             return;
          }
 
+         const selectedDate = calendar.selectedDates[0];
+         const formatSelectedDate = `${selectedDate?.getFullYear()}/${
+            selectedDate?.getMonth() + 1 < 10 ? "0" + selectedDate?.getMonth() + 1 : selectedDate?.getMonth() + 1
+         }/${selectedDate?.getDate() < 10 ? "0" + selectedDate?.getDate() : selectedDate?.getDate()} ${
+            selectedDate?.getHours() < 10 ? "0" + selectedDate?.getHours() : selectedDate?.getHours()
+         }:${selectedDate?.getMinutes() < 10 ? "0" + selectedDate?.getMinutes() : selectedDate?.getMinutes()}:${
+            selectedDate?.getSeconds() < 10 ? "0" + selectedDate?.getSeconds() : selectedDate?.getSeconds()
+         }`;
+
          todosCopied[currTodoIndex] = {
             ...todosCopied[currTodoIndex],
             value: addTodoInputText.value,
-            dueDate: addTodoInputDueDate.value,
+            dueDate: formatSelectedDate,
          };
          delete todosCopied[currTodoIndex].announced;
 
