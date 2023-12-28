@@ -53,7 +53,7 @@ function App() {
       const getTodosStore = todosStore.get("todos");
       let newTodosStore;
 
-      if (!inputTextValue) {
+      if (!inputTextValue.trim()) {
          alert("You have not entered Todo");
          return;
       }
@@ -533,6 +533,13 @@ function App() {
 
          const currTodoIndex = todosCopied.findIndex((item) => item.id === currTodoId);
 
+         if (currTodoIndex === -1) return;
+
+         if (!addTodoInputText.value.trim()) {
+            alert("You have not entered Todo");
+            return;
+         }
+
          todosCopied[currTodoIndex] = {
             ...todosCopied[currTodoIndex],
             value: addTodoInputText.value,
@@ -547,8 +554,6 @@ function App() {
          cancelEditBtn.classList.add("d-none");
          e.currentTarget.classList.add("d-none");
          currTodoId = null;
-
-         if (currTodoIndex === -1) return;
 
          todosStore.set("todos", todosCopied);
 
