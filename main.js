@@ -361,8 +361,8 @@ function App() {
                   </button>
                   <nav class="todo-list-item__right-menu">
                      <ul>
-                        <li class="right-menu__edit-btn">Sửa <i class="fa-solid fa-pen"></i></li>
-                        <li class="right-menu__delete-btn">Xóa <i class="fa-solid fa-trash"></i></li>
+                        <li class="right-menu__edit-btn">Edit <i class="fa-solid fa-pen"></i></li>
+                        <li class="right-menu__delete-btn">Delete <i class="fa-solid fa-trash"></i></li>
                      </ul>
                   </nav>
                </div>
