@@ -262,8 +262,10 @@ function App() {
 
       const htmls = getTodosStore?.map((item) => {
          if (item.status !== "Todo") return;
+         const dueDate = new Date(item.dueDate).getTime();
+
          return `
-            <li data-id="${item.id}" class="${item.announced ? "announced" : ""} todo-list-item" draggable="true">
+            <li data-id="${item.id}" class="${dueDate <= Date.now() ? "announced" : ""} todo-list-item" draggable="true">
                <div class="check-icon"></div>
                <div class="todo-list-item__content">
                   <span class="select-none todo-list-item__content-text">${item.value}</span>
@@ -320,8 +322,10 @@ function App() {
 
       const htmls = getTodosStore?.map((item) => {
          if (item.status !== "Doing") return;
+         const dueDate = new Date(item.dueDate).getTime();
+
          return `
-            <li data-id="${item.id}" class="${item.announced ? "announced" : ""} todo-list-item" draggable="true">
+            <li data-id="${item.id}" class="${dueDate <= Date.now() ? "announced" : ""} todo-list-item" draggable="true">
                <div class="check-icon">
                   <i class="fa-solid fa-gear fa-spin"></i>
                </div>
@@ -550,6 +554,7 @@ function App() {
          addTodoInputText.value = "";
          calendar.clear();
          calendar.close();
+         calendar.set("minDate", "today");
          addTodoBtn.classList.remove("d-none");
          cancelEditBtn.classList.add("d-none");
          e.currentTarget.classList.add("d-none");
@@ -674,7 +679,9 @@ function App() {
    };
 
    function flatpickrSetUp() {
-      let condition = true;
+      let condition1 = true;
+      let condition2 = true;
+
       const config = {
          enableTime: true,
          dateFormat: "Y-m-d H:i:S",
@@ -715,18 +722,22 @@ function App() {
             calendar.set("minDate", "today");
 
             if (timeDatePicked <= timeCurrDate) {
-               condition && calendar.setDate(`${formatCurrDate} ${minTime}`);
-               condition = false;
+               condition1 && calendar.setDate(`${formatCurrDate} ${minTime}`);
+               condition1 = false;
+               condition2 = true;
             } else {
-               !condition && calendar.setDate(`${formatDatePicked} 12:00`);
-               condition = true;
+               condition2 && calendar.setDate(`${formatDatePicked} 12:00`);
+               condition2 = false;
+               condition1 = true;
             }
          },
          onOpen: function (selectedDates, dateStr, instance) {
-            condition = true;
+            condition1 = true;
+            condition2 = true;
          },
          onClose: function (selectedDates, dateStr, instance) {
-            condition = false;
+            condition1 = false;
+            condition2 = false;
          },
       };
 
