@@ -703,7 +703,7 @@ function App() {
          time_24hr: true,
          wrap: true,
          altInput: true,
-         allowInput: true,
+         // allowInput: true,
          enableSeconds: true,
          //  altFormat: "F j, Y h:S K",
          altFormat: "Y/m/d H:i:S",
