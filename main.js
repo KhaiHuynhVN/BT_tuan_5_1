@@ -39,7 +39,7 @@ function App() {
 
       const selectedDate = calendar.selectedDates[0];
       const formatSelectedDate = `${selectedDate?.getFullYear()}/${
-         selectedDate?.getMonth() + 1 < 10 ? "0" + selectedDate?.getMonth() + 1 : selectedDate?.getMonth() + 1
+         selectedDate?.getMonth() + 1 < 10 ? "0" + (selectedDate?.getMonth() + 1) : selectedDate?.getMonth() + 1
       }/${selectedDate?.getDate() < 10 ? "0" + selectedDate?.getDate() : selectedDate?.getDate()} ${
          selectedDate?.getHours() < 10 ? "0" + selectedDate?.getHours() : selectedDate?.getHours()
       }:${selectedDate?.getMinutes() < 10 ? "0" + selectedDate?.getMinutes() : selectedDate?.getMinutes()}:${
@@ -492,14 +492,16 @@ function App() {
          if (editBtn) {
             editBtn.onclick = () => {
                const parent = item.closest(".todo-list-item");
-               const todoContent = parent.querySelector(".todo-list-item__content-text");
-               const todoDuaDate = parent.querySelector(".todo-list-item__content-due-date span");
                currTodoId = parent.dataset.id;
+               const todos = todosStore.get("todos");
+               const todo = todos.find((item) => item.id === currTodoId);
 
-               addTodoInputText.value = todoContent.innerText;
+               if (!todo) alert("This todo can be not found!");
+
+               addTodoInputText.value = todo.value;
                addTodoInputText.focus();
-               todoDuaDate.innerText ? calendar.set("minDate", null) : calendar.set("minDate", "today");
-               calendar.setDate(todoDuaDate.innerText);
+               todo.dueDate ? calendar.set("minDate", null) : calendar.set("minDate", "today");
+               calendar.setDate(todo.dueDate);
                addTodoBtn.classList.add("d-none");
                saveTodoBtn.classList.remove("d-none");
                cancelEditBtn.classList.remove("d-none");
@@ -549,12 +551,14 @@ function App() {
          const selectedDate = calendar.selectedDates[0];
 
          const formatSelectedDate = `${selectedDate?.getFullYear()}/${
-            selectedDate?.getMonth() + 1 < 10 ? "0" + selectedDate?.getMonth() + 1 : selectedDate?.getMonth() + 1
+            selectedDate?.getMonth() + 1 < 10 ? "0" + (selectedDate?.getMonth() + 1) : selectedDate?.getMonth() + 1
          }/${selectedDate?.getDate() < 10 ? "0" + selectedDate?.getDate() : selectedDate?.getDate()} ${
             selectedDate?.getHours() < 10 ? "0" + selectedDate?.getHours() : selectedDate?.getHours()
          }:${selectedDate?.getMinutes() < 10 ? "0" + selectedDate?.getMinutes() : selectedDate?.getMinutes()}:${
             selectedDate?.getSeconds() < 10 ? "0" + selectedDate?.getSeconds() : selectedDate?.getSeconds()
          }`;
+
+         console.log(selectedDate?.getMonth() + 1 < 10 ? "0" + selectedDate?.getMonth() + 1 : selectedDate?.getMonth() + 1);
 
          todosCopied[currTodoIndex] = {
             ...todosCopied[currTodoIndex],
