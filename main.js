@@ -496,7 +496,10 @@ function App() {
                const todos = todosStore.get("todos");
                const todo = todos.find((item) => item.id === currTodoId);
 
-               if (!todo) alert("This todo can be not found!");
+               if (!todo) {
+                  alert("This todo can be not found!");
+                  return;
+               }
 
                addTodoInputText.value = todo.value;
                addTodoInputText.focus();
@@ -557,8 +560,6 @@ function App() {
          }:${selectedDate?.getMinutes() < 10 ? "0" + selectedDate?.getMinutes() : selectedDate?.getMinutes()}:${
             selectedDate?.getSeconds() < 10 ? "0" + selectedDate?.getSeconds() : selectedDate?.getSeconds()
          }`;
-
-         console.log(selectedDate?.getMonth() + 1 < 10 ? "0" + selectedDate?.getMonth() + 1 : selectedDate?.getMonth() + 1);
 
          todosCopied[currTodoIndex] = {
             ...todosCopied[currTodoIndex],
