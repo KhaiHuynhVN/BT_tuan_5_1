@@ -456,20 +456,9 @@ function App() {
          item.onclick = (e) => {
             e.stopPropagation();
 
-            const activedMenu = document.querySelectorAll(".todo-list-item__right-menu.active");
             const parentEl = e.target.closest(".todo-list-item__right");
             const menu = parentEl.querySelector(".todo-list-item__right-menu");
             const menuUl = parentEl.querySelector(".todo-list-item__right-menu ul");
-
-            if (activedMenu.length) {
-               activedMenu.forEach((item) => {
-                  item.style = "";
-                  item.ontransitionend = (e) => {
-                     e.currentTarget.classList.remove("active");
-                     e.currentTarget.ontransitionend = () => {};
-                  };
-               });
-            }
 
             if (menu.classList.contains("active")) {
                menu.style = "";
