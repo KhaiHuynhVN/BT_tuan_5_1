@@ -597,14 +597,8 @@ function App() {
             if (index === hasDueDate.length - 1) firstRender = false;
             if (currDate <= time) return;
 
-            const detectTodoLateDueDates = $$(".todo-list-item:not(.announced)");
-
-            detectTodoLateDueDates.forEach((el) => {
-               const detectDueDate = el.querySelector(".todo-list-item__content-due-date span").innerText;
-               const getTimeDueDate = new Date(detectDueDate).getTime();
-
-               if (detectDueDate && getTimeDueDate <= Date.now() && item.status !== "Done") el.classList.add("announced");
-            });
+            const detectTodoLateDueDates = $(`.todo-list-item[data-id="${item.id}"]`);
+            !detectTodoLateDueDates.classList.contains("active") && detectTodoLateDueDates.classList.add("announced");
 
             if (!item.announced) {
                item.announced = true;
