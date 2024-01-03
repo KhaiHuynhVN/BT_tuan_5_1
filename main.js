@@ -599,11 +599,11 @@ function App() {
 
             const detectTodoLateDueDates = $$(".todo-list-item:not(.announced)");
 
-            detectTodoLateDueDates.forEach((item) => {
-               const detectDueDate = item.querySelector(".todo-list-item__content-due-date span").innerText;
+            detectTodoLateDueDates.forEach((el) => {
+               const detectDueDate = el.querySelector(".todo-list-item__content-due-date span").innerText;
                const getTimeDueDate = new Date(detectDueDate).getTime();
 
-               if (detectDueDate && getTimeDueDate <= Date.now()) item.classList.add("announced");
+               if (detectDueDate && getTimeDueDate <= Date.now() && item.status !== "Done") el.classList.add("announced");
             });
 
             if (!item.announced) {
