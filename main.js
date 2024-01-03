@@ -547,6 +547,7 @@ function App() {
          }
 
          const selectedDate = calendar.selectedDates[0];
+
          const formatSelectedDate = `${selectedDate?.getFullYear()}/${
             selectedDate?.getMonth() + 1 < 10 ? "0" + selectedDate?.getMonth() + 1 : selectedDate?.getMonth() + 1
          }/${selectedDate?.getDate() < 10 ? "0" + selectedDate?.getDate() : selectedDate?.getDate()} ${
@@ -558,7 +559,7 @@ function App() {
          todosCopied[currTodoIndex] = {
             ...todosCopied[currTodoIndex],
             value: addTodoInputText.value,
-            dueDate: formatSelectedDate,
+            dueDate: selectedDate ? formatSelectedDate : "",
          };
          delete todosCopied[currTodoIndex].announced;
 
